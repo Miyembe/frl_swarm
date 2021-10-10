@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>frl_swarm</name>
+  <name>swarm_frl</name>
   <version>0.0.0</version>
-  <description>The frl_swarm package</description>
+  <description>The swarm_frl package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
