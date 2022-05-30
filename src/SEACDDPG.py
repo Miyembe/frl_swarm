@@ -291,7 +291,7 @@ if __name__ == "__main__":
 	args = parser.parse_args("")
 	args.exp_name = "exp_random_seed"
 	name_var = 'random_seed'
-	list_var = [31, 688]
+	list_var = [101,102,103]
 	for var in list_var:
 		setattr(args, name_var, var)
 		print(args)

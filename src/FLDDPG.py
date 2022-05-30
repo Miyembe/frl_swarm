@@ -359,9 +359,9 @@ if __name__ == "__main__":
 	args = parser.parse_args("")
 	args.exp_name = "exp_random_seed"
 	name_var1 = 'random_seed'
-	list_var1 = [233, 998]
+	list_var1 = [101, 102, 103]
 	name_var2 = 'averaging_freq'
-	list_var2 = [20, 30]
+	list_var2 = [10]
 
 	for var1 in list_var1:
 		setattr(args, name_var1, var1)
