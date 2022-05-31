@@ -1,4 +1,4 @@
-# swarm_frl
+# frl_swarm
 Federated Deep Reinforcement Learning for swarm robotics.
 
 This is a ros package for Federated Deep Reinforcement learning for swarm robotics project.
