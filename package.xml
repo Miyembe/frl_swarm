@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>swarm_frl</name>
+  <name>frl_swarm</name>
   <version>0.0.0</version>
   <description>The swarm_frl package</description>
 
