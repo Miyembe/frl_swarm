@@ -1,2 +1,3 @@
 src/weights/*
 __pycache__/
+csv/*
