@@ -14,7 +14,7 @@ class Logger(object):
 
     def __init__(self, log_dir):
         """Creates a summary writer logging to log_dir."""
-        self.writer = tf.summary.FileWriter(log_dir)
+        self.writer = tf.summary.create_file_writer(log_dir)
 
     def log_scalar(self, tag, value, step):
         """Log a scalar variable.
@@ -27,9 +27,12 @@ class Logger(object):
         step : int
             training iteration
         """
-        summary = tf.Summary(value=[tf.Summary.Value(tag=tag,
-                                                     simple_value=value)])
-        self.writer.add_summary(summary, step)
+        with self.writer.as_default():
+            tf.summary.scalar(tag, value, step=step)
+            #summary = tf.Summary(value=[tf.Summary.Value(tag=tag,
+            #                                         simple_value=value)])
+            #self.writer.add_summary(summary, step)
+            self.writer.flush()
 
     def log_images(self, tag, images, step):
         """Logs a list of images."""

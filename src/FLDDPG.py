@@ -90,19 +90,25 @@ def main(args):
 	board_logger = tensorboard_logging.Logger(os.path.join(logger_ins.get_dir(), "tf_board", time_str))
 	random.seed(args.random_seed)
 	log_path = HOME + '/catkin_ws/src/frl_swarm/src/log/FLDDPG/csv/'
+	
 	weight_path = HOME + '/catkin_ws/src/frl_swarm/src/weights/FLDDPG/'
-
+	if not os.path.isdir(log_path):
+		os.mkdir(log_path)
+	if not os.path.isdir(weight_path):
+		os.mkdir(weight_path)
 	########################################################
 	env=turtlebot_env.Env()
 	replay_buffers = [None]*env.num_robots
 	agents = [None]*env.num_robots
 	for i in range(env.num_robots):
 		replay_buffers[i] = ExperienceReplayBuffer(total_timesteps=5000*256, type_buffer="HER")
-		agents[i] = DDPG(env, replay_buffers[i], weight_path + '{}'.format(i))
+		if not os.path.isdir(weight_path + '{}'.format(i)):
+			os.mkdir(weight_path + '{}'.format(i))
+		agents[i] = DDPG(env, replay_buffers[i], args.num_weights, args.num_layers, weight_path + '{}'.format(i))
 	
 
 	########################################################
-	num_trials = 1000
+	num_trials = args.num_epochs
 	trial_len  = 256
 	log_interval = 3
 	weight_interval = args.averaging_freq
@@ -356,10 +362,13 @@ def main(args):
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
+	parser.add_argument('--num_epochs', default=500, type=int)
+	parser.add_argument('--num_weights', default=128, type=int)
+	parser.add_argument('--num_layers', default=2, type=int)
 	args = parser.parse_args("")
 	args.exp_name = "exp_random_seed"
 	name_var1 = 'random_seed'
-	list_var1 = [101, 102, 103]
+	list_var1 = [101]
 	name_var2 = 'averaging_freq'
 	list_var2 = [10]
 

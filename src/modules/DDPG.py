@@ -48,7 +48,7 @@ def stack_samples(samples):
 
 
 class DDPG:
-	def __init__(self, env, replay_buffer, weight_path):
+	def __init__(self, env, replay_buffer, num_weights, num_layers,weight_path):
 		self.env  = env
 		self.num_robots = env.num_robots
 
@@ -82,7 +82,7 @@ class DDPG:
 		# File name
 		self.file_name ="reward_{}_{}_{}".format(self.time_str, self.num_robots, self.replay_buffer.type_buffer)
 		
-		self.hid_list = [500, 500, 500]
+		self.hid_list = [num_weights for _ in range(num_layers)]
 
 		# ===================================================================== #
 		#                               Actor Model                             #

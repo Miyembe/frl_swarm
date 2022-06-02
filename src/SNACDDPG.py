@@ -39,17 +39,22 @@ def main(args):
 	board_logger = tensorboard_logging.Logger(os.path.join(logger_ins.get_dir(), "tf_board", time_str))
 	log_path = HOME + '/catkin_ws/src/frl_swarm/src/log/SNACDDPG/csv/'
 	weight_path = HOME + '/catkin_ws/src/frl_swarm/src/weights/SNACDDPG/'
+	if not os.path.isdir(log_path):
+		os.mkdir(log_path)
+	if not os.path.isdir(weight_path):
+		os.mkdir(weight_path)
 	random.seed(args.random_seed)
 
+
 	########################################################
-	env= ppswarm_env.Env()
+	env= turtlebot_env.Env()
 	replay_buffer = ExperienceReplayBuffer(total_timesteps=5000*256, type_buffer="HER")
-	agent = DDPG(env, replay_buffer, weight_path )
+	agent = DDPG(env, replay_buffer, args.num_weights, args.num_layers, weight_path)
 	
 	
 
 	########################################################
-	num_trials = 1000
+	num_trials = args.num_epochs
 	trial_len  = 256
 	log_interval = 3
 	train_indicator = 1
@@ -278,10 +283,13 @@ def main(args):
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
-	args = parser.parse_args("")
+	parser.add_argument('--num_epochs', default=500, type=int)
+	parser.add_argument('--num_weights', default=128, type=int)
+	parser.add_argument('--num_layers', default=2, type=int)
+	args = parser.parse_args('')
 	args.exp_name = "exp_random_seed"
 	name_var = 'random_seed'
-	list_var = [101,102,103]
+	list_var = [101]
 	for var in list_var:
 		setattr(args, name_var, var)
 		print(args)

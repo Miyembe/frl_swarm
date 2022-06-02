@@ -38,17 +38,22 @@ def main(args):
 	random.seed(args.random_seed)
 	log_path = HOME + '/catkin_ws/src/frl_swarm/src/log/SEACDDPG/csv/'
 	weight_path = HOME + '/catkin_ws/src/frl_swarm/src/weights/SEACDDPG/'
-
+	if not os.path.isdir(log_path):
+		os.mkdir(log_path)
+	if not os.path.isdir(weight_path):
+		os.mkdir(weight_path)
 	########################################################
 	env= turtlebot_env.Env()
 	replay_buffer = ExperienceReplayBuffer(total_timesteps=5000*256, type_buffer="HER")
 	agents = [None]*env.num_robots
 	for i in range(env.num_robots):
-		agents[i] = DDPG(env, replay_buffer, weight_path + '{}'.format(i))
+		if not os.path.isdir(weight_path + '{}'.format(i)):
+			os.mkdir(weight_path + '{}'.format(i))
+		agents[i] = DDPG(env, replay_buffer, args.num_weights, args.num_layers,weight_path + '{}'.format(i))
 	
 
 	########################################################
-	num_trials = 1000
+	num_trials = args.num_epochs
 	trial_len  = 256
 	log_interval = 3
 	train_indicator = 1
@@ -288,10 +293,13 @@ def main(args):
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
+	parser.add_argument('--num_epochs', default=500, type=int)
+	parser.add_argument('--num_weights', default=128, type=int)
+	parser.add_argument('--num_layers', default=2, type=int)
 	args = parser.parse_args("")
 	args.exp_name = "exp_random_seed"
 	name_var = 'random_seed'
-	list_var = [101,102,103]
+	list_var = [101]
 	for var in list_var:
 		setattr(args, name_var, var)
 		print(args)
